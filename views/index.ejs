@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daftar Belanja</title>
+    <link rel="stylesheet" href="styles/main.css" />
+  </head>
+  <body>
+    <main>
+      <div class="box" id="heading">
+        <h1>Daftar Belanja Bulanan</h1>
+        <h2><%= listTitle %></h2>
+      </div>
+      <section class="box">
+        <% for(let item of listItems){%>
+        <div class="item">
+          <form action="/delete" method="post">
+            <input
+              type="checkbox"
+              onchange="this.form.submit()"
+              name="deletedItemId"
+              value="<%=item.id%>" />
+          </form>
+          <p id="title"><%= item.title %></p>
+
+          <form class="edit" action="/edit" method="post">
+            <input type="hidden" name="updatedItemId" value="<%= item.id %>" />
+            <input
+              id="input<%=item.id %>"
+              type="text"
+              name="updatedItemTitle"
+              value="<%=item.title %>"
+              autocomplete="off"
+              autofocus="true"
+              hidden="true" />
+            <button id="done<%= item.id %>" class="edit" type="submit" hidden>
+              <img
+                class="icon"
+                src="/asset/icon/check-solid.svg"
+                alt="tick-image" />
+            </button>
+          </form>
+          <button
+            id="edit<%=item.id %>"
+            class="edit"
+            onclick="handler('<%=item.id%>')">
+            <img
+              class="icon"
+              src="/asset/icon/pencil-solid.svg"
+              alt="pencil-image" />
+          </button>
+        </div>
+        <%}%>
+        <form class="item" action="/add" method="post">
+          <input
+            type="text"
+            name="newItem"
+            placeholder="Insert New Item"
+            autocomplete="off"
+            autofocus="true" />
+          <button class="add" type="submit" name="list" value="<%=listTitle %>">
+            +
+          </button>
+        </form>
+      </section>
+      <script>
+        function handler(id) {
+          document.getElementById("title" + id).setAttribute("hidden", true);
+          document.getElementById("edit" + id).setAttribute("hidden", true);
+          document.getElementById("done" + id).removeAttribute("hidden");
+          document.getElementById("input" + id).removeAttribute("hidden");
+        }
+      </script>
+    </main>
+  </body>
+</html>
